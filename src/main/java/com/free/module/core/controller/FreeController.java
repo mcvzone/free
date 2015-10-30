@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.slf4j.Logger;
@@ -54,24 +53,25 @@ public class FreeController {
 	
 	@RequestMapping(value = FreePathConfig.CONTEXT_ROOT, method = RequestMethod.GET)
 	public String get(Model result, HttpServletRequest request
-			, @RequestParam(value="mission") String sMission
+			, @RequestParam(value=FreeReservedWordConfig.REQUIRED_SYSTEM_PARAM1) String sMission
 			, @RequestParam Map<String, String> map) throws ClassNotFoundException, InstantiationException, IllegalAccessException,
 															NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException {
 		return this.post(result, request, sMission, map);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = FreePathConfig.CONTEXT_ROOT, method = RequestMethod.POST)
 	public String post(Model result, HttpServletRequest request
-			, @RequestParam(value="mission") String sMission
+			, @RequestParam(value=FreeReservedWordConfig.REQUIRED_SYSTEM_PARAM1) String sMission
 			, @RequestParam Map<String, String> map) throws ClassNotFoundException, InstantiationException, IllegalAccessException,
 															NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException {
-		String sNodeName, sValue, sResult = "", sReturnPage = "";
+		String sNodeName, sValue, sReturnPage = "";
 		NodeList missions, returnPages;
 		Node mission, returnPage;
 		Map<String, String> mReturnPages = new HashMap<String, String>();
 		missions = mMission.get(sMission);
 
-		Object instance = null, model = null;
+		Object instance = null, model = null, returnObject;
 		Class<?> klass = null, argType = null;
 		Method method = null;
 
@@ -86,10 +86,14 @@ public class FreeController {
 			} else if( "arg-type".equals(sNodeName)){
 				argType = Class.forName(sValue);
 			} else if( "method-name".equals(sNodeName)){
-				method = klass.getDeclaredMethod(sValue, argType);
-			} else if( "return-type".equals(sNodeName)){
+				if( argType != null ){
+					method = klass.getDeclaredMethod(sValue, argType);
+				} else {
+					method = klass.getDeclaredMethod(sValue);
+				}
+			}/* else if( "return-type".equals(sNodeName)){
 				sResult = sValue;
-			} else if( "return-page".equals(sNodeName)){
+			} */else if( "return-page".equals(sNodeName)){
 				returnPages = mission.getChildNodes();
 				if( returnPages != null && returnPages.getLength() > 0){
 					for( int z=0; z<returnPages.getLength(); z++ ){
@@ -102,15 +106,31 @@ public class FreeController {
 		
 		if( klass != null ){
 			
-			if( argType.equals(Map.class) ){
-				model = map;
-			} else {
-				model = FreeUtil.mappingParameterToModel(request.getParameterMap(), argType);
+			//setting argument
+			if( argType != null ){
+				if( argType.equals(Map.class) ){
+					model = map;
+				} else {
+					model = FreeUtil.mappingParameterToModel(request.getParameterMap(), argType);
+				}
 			}
 			
+			//invoke mission
 			if( method != null ){
 				if( !void.class.equals(method.getReturnType())){
-					result.addAttribute(FreeReservedWordConfig.MISSION_RESULT_KEY, method.invoke(instance, model));
+					if( argType != null ){
+						returnObject = method.invoke(instance, model);
+					} else {
+						returnObject = method.invoke(instance);
+					}
+					
+					result.addAttribute(FreeReservedWordConfig.MISSION_RESULT_KEY, returnObject);
+				} else {
+					if( argType != null ){
+						method.invoke(instance, model);
+					} else {
+						method.invoke(instance);
+					}
 				}
 			}
 			

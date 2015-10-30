@@ -10,38 +10,32 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
+import com.free.module.common.model.vo.UserInfoVo;
+import com.free.module.core.config.FreeReservedWordConfig;
 
 public class SessionInterCeptor extends HandlerInterceptorAdapter{
 private static final Logger logger = LoggerFactory.getLogger(SessionInterCeptor.class);
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		/*
-		CodeUtil codeUtil = CodeUtil.getInstance();
-		String sScrId = request.getParameter(BaseCont.SCREEN_KEY);
-		String sActId = request.getParameter(BaseCont.ACTION_KEY);
-		
-		CodeModel codeModel = codeUtil.getCodeItem("CO0000006", sScrId+"^"+sActId);
-		SessionManager sm = new SessionManager(request);
-
-		logger.debug("~ skip screen : " + codeModel.getCODE());
-		logger.debug("~ session : " + sm.getTheOne());
-		
-		if( codeModel != null || sm.getTheOne() != null ){
+		String sMission = (String)request.getParameter("mission");
+		if( "CM0000001".equals(sMission) || "CM0000002".equals(sMission) || "CM0000003".equals(sMission) || "CM0000004".equals(sMission) ){
 			return true;
 		}
 		
-		request.getRequestDispatcher(request.getContextPath() + "/login.do").forward(request, response);
-		*/
-        return false;
+		UserInfoVo userInfoVo = (UserInfoVo)request.getSession().getAttribute(FreeReservedWordConfig.USER_INFO_KEY);
+		if( userInfoVo == null ){
+			response.sendRedirect("/free?mission=CM0000002");
+			return false;
+		}
+		return true;
 	}
 	
-	
+	/*
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-	      logger.debug("LoginInterceptor.postHandle process");
-	      super.postHandle(request, response, handler, modelAndView);
-	}
+		super.postHandle(request, response, handler, modelAndView);
+	}*/
 }

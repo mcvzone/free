@@ -128,48 +128,7 @@ UserInfoVo userInfoVo = (UserInfoVo)request.getSession().getAttribute(FreeReserv
                     <ul>
                         <li>
                             <div class="parentMenu">
-                                <a href="#" id="ID1234">공지사항</a>
-                                <div class="childMenu">
-                                    <ul>
-                                        <li><a href="http://www.mondo.co.kr" target="_blank" id="ID1235">mondo.co.kr</a></li>
-                                        <li>
-                                            <a href="#" id="ID1236" class="expand">AXISJ Simple</a>
-                                            <div class="childsMenu">
-                                                <ul>
-                                                    <li><a href="#" id="ID1237">Feature</a></li>
-                                                    <li><a href="#" id="ID1238">Design</a></li>
-                                                    <li><a href="#" id="ID1239">Application</a></li>
-                                                    <li><a href="#" id="ID1240" class="expand">Options</a>
-                                                        <div class="childsMenu">
-                                                            <ul>
-                                                                <li><a href="#" id="ID1241">Feature</a></li>
-                                                                <li><a href="#" id="ID1242">Design</a></li>
-                                                                <li><a href="#" id="ID1243" class="expand">Applications</a>
-                                                                    <div class="childsMenu">
-                                                                        <ul>
-                                                                            <li><a href="#" id="ID1244">Feature</a></li>
-                                                                            <li><a href="#" id="ID1245">Design</a></li>
-                                                                            <li><a href="#" id="ID1246">Applications</a></li>
-                                                                            <li><a href="#" id="ID1247">Options</a></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="#" id="ID1248">Options</a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li><a href="#">AXISJ Journey</a></li>
-                                        <li><a href="#">AXInput</a></li>
-                                        <li><a href="#">Jowrney</a></li>
-                                        <li><a href="#">Stacey</a></li>
-                                    </ul>
-                                </div>
+                                <a href="/free?mission=CM0000005" id="ID1234">공지사항</a>
                             </div>
                         </li>
                         <li>

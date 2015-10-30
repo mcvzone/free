@@ -22,7 +22,7 @@ private static final Logger logger = LoggerFactory.getLogger(CmLoginProcess.clas
 		userInfoVo.setId(loginModel.getLoginId());
 		userInfoVo.setName("neo");
 		userInfoVo.setAge("22");
-		userInfoVo.setPowerLevel("1");
+		userInfoVo.setPower_level("1");
 		userInfoVo.setSex("M");
 		userInfoVo.setLocation("login");
 		

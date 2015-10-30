@@ -4,7 +4,6 @@
         <class>com.free.module.common.process.CmTestProcess</class>
         <arg-type>com.free.module.common.model.param.TestParam</arg-type>
         <method-name>test</method-name>
-        <return-type>java.lang.String</return-type>
         <return-page>
             <success>/index.do</success>
             <fail></fail>
@@ -24,7 +23,6 @@
         <class>com.free.module.common.process.CmLoginProcess</class>
         <arg-type>com.free.module.common.model.param.LoginParam</arg-type>
         <method-name>loginCheck</method-name>
-        <return-type>com.free.module.common.model.vo.UserInfoVo</return-type>
         <return-page>
             <success>/common/login/loginSet.do</success>
             <fail>/common/login/login.do</fail>
@@ -37,6 +35,31 @@
     <mission id="CM0000004">
         <return-page>
             <success>/common/login/logout.do</success>
+        </return-page>
+    </mission>
+    
+    <mission id="CM0000005">
+        <class>com.free.module.common.process.CmNoticeProcess</class>
+        <method-name>selectNoticeList</method-name>
+        <return-page>
+            <success>/common/notice/noticeList.do</success>
+            <fail></fail>
+            <user-page1></user-page1>
+            <user-page2></user-page2>
+            <user-page3></user-page3>
+        </return-page>
+    </mission>
+    
+    <mission id="CM0000006">
+        <class>com.free.module.common.process.CmNoticeProcess</class>
+        <arg-type>java.util.Map</arg-type>
+        <method-name>selectNoticeDetail</method-name>
+        <return-page>
+            <success>/common/notice/noticeDetail.do</success>
+            <fail></fail>
+            <user-page1></user-page1>
+            <user-page2></user-page2>
+            <user-page3></user-page3>
         </return-page>
     </mission>
 </missions>

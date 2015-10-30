@@ -6,9 +6,8 @@ public class UserInfoVo {
 	private String age;
 	private String sex;
 	private String location;
-	private String connectIp;
-	private String powerLevel;
-	
+	private String connect_ip;
+	private String power_level;
 	public String getId() {
 		return id;
 	}
@@ -39,17 +38,17 @@ public class UserInfoVo {
 	public void setLocation(String location) {
 		this.location = location;
 	}
-	public String getConnectIp() {
-		return connectIp;
+	public String getConnect_ip() {
+		return connect_ip;
 	}
-	public void setConnectIp(String connectIp) {
-		this.connectIp = connectIp;
+	public void setConnect_ip(String connect_ip) {
+		this.connect_ip = connect_ip;
 	}
-	public String getPowerLevel() {
-		return powerLevel;
+	public String getPower_level() {
+		return power_level;
 	}
-	public void setPowerLevel(String powerLevel) {
-		this.powerLevel = powerLevel;
+	public void setPower_level(String power_level) {
+		this.power_level = power_level;
 	}
 	
 }

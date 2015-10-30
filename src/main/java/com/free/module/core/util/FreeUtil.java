@@ -94,6 +94,10 @@ public class FreeUtil {
 		
 		//mission
 		for( int i=0; i < bizs.item(0).getChildNodes().getLength(); i++ ){
+			if( bizs.item(0).getChildNodes().item(i).ELEMENT_NODE != bizs.item(0).getChildNodes().item(i).getNodeType() ){
+				continue;
+			}
+			
 			sBizName = bizs.item(0).getChildNodes().item(i).getNodeName();
 			sBizMission = bizs.item(0).getChildNodes().item(i).getTextContent();
 			
