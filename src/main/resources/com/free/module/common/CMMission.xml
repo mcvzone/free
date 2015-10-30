@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<missions>
+    <mission id="CM0000001">
+        <class>com.free.module.common.process.CmTestProcess</class>
+        <arg-type>com.free.module.common.model.param.TestParam</arg-type>
+        <method-name>test</method-name>
+        <return-type>java.lang.String</return-type>
+        <return-page>
+            <success>/index.do</success>
+            <fail></fail>
+            <user-page1></user-page1>
+            <user-page2></user-page2>
+            <user-page3></user-page3>
+        </return-page>
+    </mission>
+    
+    <mission id="CM0000002">
+        <return-page>
+            <success>/common/login/login.do</success>
+        </return-page>
+    </mission>
+    
+    <mission id="CM0000003">
+        <class>com.free.module.common.process.CmLoginProcess</class>
+        <arg-type>com.free.module.common.model.param.LoginParam</arg-type>
+        <method-name>loginCheck</method-name>
+        <return-type>com.free.module.common.model.vo.UserInfoVo</return-type>
+        <return-page>
+            <success>/common/login/loginSet.do</success>
+            <fail>/common/login/login.do</fail>
+            <user-page1></user-page1>
+            <user-page2></user-page2>
+            <user-page3></user-page3>
+        </return-page>
+    </mission>
+    
+    <mission id="CM0000004">
+        <return-page>
+            <success>/common/login/logout.do</success>
+        </return-page>
+    </mission>
+</missions>
