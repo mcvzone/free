@@ -1,5 +1,7 @@
 package com.free.module.common.model.vo;
 
+import java.util.List;
+
 public class NoticeVo {
     private String seq;
     private String title;
@@ -8,9 +10,9 @@ public class NoticeVo {
     private String writer;
     private String reg_date;
     private String description;
-    private String attach;
     private String red_count;
     private String use_yn;
+    private List<String> attachs;
     
 	public String getSeq() {
 		return seq;
@@ -54,12 +56,6 @@ public class NoticeVo {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getAttach() {
-		return attach;
-	}
-	public void setAttach(String attach) {
-		this.attach = attach;
-	}
 	public String getRed_count() {
 		return red_count;
 	}
@@ -72,6 +68,11 @@ public class NoticeVo {
 	public void setUse_yn(String use_yn) {
 		this.use_yn = use_yn;
 	}
-    
-    
+	public List<String> getAttachs() {
+		return attachs;
+	}
+	public void setAttachs(List<String> attachs) {
+		this.attachs = attachs;
+	}
+
 }

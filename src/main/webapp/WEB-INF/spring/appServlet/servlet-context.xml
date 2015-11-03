@@ -41,8 +41,11 @@
         <beans:property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView"/>
     </beans:bean>
     
+    <!-- 해당 resolver 가 /download 컨트롤러 호출을 viewResolver 보다 먼저 실행 하게 한다.
+    해당 결과값이 null 경우 비로소 viewResolver 호출하여 처리 한다. -->
+    <beans:bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
+    
+    <beans:bean id="fileDownloadView" class="com.free.module.core.view.FileDownloadView"/>
+    
 	<context:component-scan base-package="com.free.module" />
-	
-	
-	
 </beans:beans>
