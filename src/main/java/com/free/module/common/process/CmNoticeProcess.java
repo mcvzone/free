@@ -51,6 +51,7 @@ public class CmNoticeProcess {
 		notice.setTitle("15차 정기 모임 관련 사항 입니다.");
 		notice.setWriter("NEO");
 		notice.setReg_date("20131010");
+		notice.setDescription("");
 		notices.add(notice);
 
 		notice = new NoticeVo();

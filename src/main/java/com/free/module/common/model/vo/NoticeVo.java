@@ -9,6 +9,7 @@ public class NoticeVo {
     private String reg_date;
     private String description;
     private String attach;
+    private String red_count;
     private String use_yn;
     
 	public String getSeq() {
@@ -58,6 +59,12 @@ public class NoticeVo {
 	}
 	public void setAttach(String attach) {
 		this.attach = attach;
+	}
+	public String getRed_count() {
+		return red_count;
+	}
+	public void setRed_count(String red_count) {
+		this.red_count = red_count;
 	}
 	public String getUse_yn() {
 		return use_yn;
