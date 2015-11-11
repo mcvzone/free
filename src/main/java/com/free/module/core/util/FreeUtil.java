@@ -92,7 +92,7 @@ public class FreeUtil {
 		bizs = docBizConfig.getElementsByTagName("bizs");
 		String sId, sBizName, sBizMission;
 		
-		logger.debug("biz size : " + bizs.item(0).getChildNodes().getLength());
+		//logger.debug("biz size : " + bizs.item(0).getChildNodes().getLength());
 		
 		//mission
 		for( int i=0; i < bizs.item(0).getChildNodes().getLength(); i++ ){
@@ -121,7 +121,7 @@ public class FreeUtil {
 					throw new XmlParseException("already mission. [" + sId + "]");
 				}
 				
-				logger.debug("load mission : " + sId);
+				logger.info("load mission : " + sId);
 				mMission.put(sId, mission.getChildNodes());
 			}
 		}
