@@ -5,7 +5,13 @@
 <%@ page import="java.util.*"%>
 <%
 
-NoticeVo notice = (NoticeVo)request.getAttribute(FreeReservedWordConfig.MISSION_RESULT_KEY);
+Map<String, Object> mResult = (Map<String, Object>)request.getAttribute(FreeReservedWordConfig.MISSION_RESULT);
+List<NoticeVo> notices = null;
+NoticeVo noticeDesc = null;
+if(mResult != null ){
+    notices = (List<NoticeVo>)mResult.get("list");
+    noticeDesc = (NoticeVo)mResult.get("desc");
+}
 
 String sSeq = "";
 String sTitle = "";
@@ -18,17 +24,30 @@ String sRedCount = "";
 String sUseYn = "";
 List<String> attachs = null;
 
-if( notice != null ){
-	sSeq = notice.getSeq();
-	sTitle = notice.getTitle();
-	sStartDate = notice.getStart_date();
-	sEndDate = notice.getEnd_date();
-	sWriter = notice.getWriter();
-	sDescription = notice.getDescription();
-	sRedCount = notice.getRed_count();
-	sUseYn = notice.getUse_yn();
-    System.out.println("notice.getAttachs() : " + notice.getAttachs());
-	attachs = notice.getAttachs();
+StringBuffer sbData = null;
+if( notices != null ){
+    sbData = new StringBuffer();
+    NoticeVo notice = null;
+    for( int i=0; i<notices.size() && i < 3; i++ ){
+    	notice = notices.get(i);
+        sbData.append("{seq:"+notice.getSeq()+
+                   ", title:'"+notice.getTitle()+
+                   "', writer:'"+notice.getWriter()+
+                   "', reg_date:'"+notice.getReg_date()+"'},");
+        
+    }
+}
+
+if( noticeDesc != null ){
+	sSeq = noticeDesc.getSeq();
+	sTitle = noticeDesc.getTitle();
+	sStartDate = noticeDesc.getStart_date();
+	sEndDate = noticeDesc.getEnd_date();
+	sWriter = noticeDesc.getWriter();
+	sDescription = noticeDesc.getDescription();
+	sRedCount = noticeDesc.getRed_count();
+	sUseYn = noticeDesc.getUse_yn();
+	attachs = noticeDesc.getAttachs();
 }
 
 %>
@@ -37,61 +56,17 @@ if( notice != null ){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>공지사항-상세</title>
+<script type="text/javascript" src="/resources/common/js/common.util.js"></script>
 <script type="text/javascript">
-/**
- * Require Files for AXISJ UI Component...
- * Based        : jQuery
- * Javascript   : AXJ.js, AXGrid.js, AXInput.js, AXSelect.js
- * CSS          : AXJ.css, AXGrid.css, AXButton.css, AXInput.css, AXSelecto.css
- */
- var pageID = "ajax";
-
- var myGrid = new AXGrid();
- var itemSum = 0;
- var fnObj = {
-     pageStart: function(){
-         myGrid.setConfig({
-             targetID : "id-top-grid",
-             theme : "AXGrid",
-             //viewMode: "grid", // ["grid","icon","mobile"]
-             // 브라우저 사이즈에 따른 changeGridView 설정
-             mediaQuery: {
-                 mx:{min:0, max:600}, dx:{min:600}
-             },
-             colGroup : [
-                 {key:"no", label:"번호", width:"40", align:"center", formatter:"money"},
-                 {key:"title", label:"제목", width:"200"},
-                 {key:"writer", label:"작성자", width:"90", align:"center"},
-                 {key:"regDate", label:"작성일", width:"90", align:"center"},
-                 {key:"desc", label:"비고", width:"*"}
-             ],
-
-             body : {
-                 onclick: function(){
-                     toast.push(Object.toJSON({index:this.index, item:this.item}));
-                     //alert(this.list);
-                     //alert(this.page);
-                 }
-             },
-             page:{
-                 paging:true,
-                 pageNo:1,
-                 pageSize:100,
-                 status:{formatter: null}
-             }
-         });
-
-         myGrid.setList({
-             ajaxUrl:"loadGrid.php", ajaxPars:"param1=1&param2=2", onLoad:function(){
-                 //trace(this);
-             }
-         });
-
-     }
- };
-
- jQuery(document.body).ready(function(){fnObj.pageStart()});
-
+$(document).ready(function(){
+	var columns = [{key:"seq", label:"번호", width:"100", align:"center", formatter:"money"},
+                    {key:"title", label:"제목", width:"500"},
+                    {key:"writer", label:"작성자", width:"100", align:"center"},
+                    {key:"reg_date", label:"작성일", width:"*", align:"center", formatter:"date"}];
+	var datas = [<%=sbData.toString().substring(0, sbData.toString().length()-1)%>];
+	
+	grid(columns, datas, true);
+});
 </script>
 <style type="text/css">
 .cls-read-table {
@@ -110,7 +85,7 @@ if( notice != null ){
 <form action="/free?mission=CM0000006" method="post" name="mainForm">
     <input type="hidden" name="seq">
 </form>
-<div id="id-top-grid"></div>
+<div id="id-grid"></div>
 <div style="height:10px;"></div>
 <div id="id-read-header" style="width:100%;">
     <table class="cls-read-table">

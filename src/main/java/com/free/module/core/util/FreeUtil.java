@@ -3,6 +3,7 @@ package com.free.module.core.util;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -78,7 +79,8 @@ public class FreeUtil {
 	 * @throws IOException
 	 * @throws XmlParseException
 	 */
-	public static void getXmlElement(Map<String, NodeList> mMission) throws ParserConfigurationException, SAXException, IOException, XmlParseException{
+	public static Map<String, NodeList> getMissionXmlElement() throws ParserConfigurationException, SAXException, IOException, XmlParseException{
+		Map<String, NodeList> mMission = new HashMap<String, NodeList>();
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		
@@ -123,5 +125,6 @@ public class FreeUtil {
 				mMission.put(sId, mission.getChildNodes());
 			}
 		}
+		return mMission;
 	}
 }

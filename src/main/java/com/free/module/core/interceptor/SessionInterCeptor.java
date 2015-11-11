@@ -25,7 +25,7 @@ private static final Logger logger = LoggerFactory.getLogger(SessionInterCeptor.
 			return true;
 		}
 		
-		UserInfoVo userInfoVo = (UserInfoVo)request.getSession().getAttribute(FreeReservedWordConfig.USER_INFO_KEY);
+		UserInfoVo userInfoVo = (UserInfoVo)request.getSession().getAttribute(FreeReservedWordConfig.USER_INFO);
 		if( userInfoVo == null ){
 			response.sendRedirect("/free?mission=CM0000002");
 			return false;

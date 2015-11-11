@@ -1,13 +1,11 @@
 package com.free.module.core.controller;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,11 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
+import com.free.module.core.config.FreeModuleConfig;
 import com.free.module.core.config.FreePathConfig;
 import com.free.module.core.config.FreeReservedWordConfig;
-import com.free.module.core.exception.XmlParseException;
 import com.free.module.core.util.FreeUtil;
 
 /**
@@ -31,25 +28,6 @@ import com.free.module.core.util.FreeUtil;
 @Controller
 public class FreeController {
 	private static final Logger logger = LoggerFactory.getLogger(FreeController.class);
-	
-	private static Map<String, NodeList> mMission = new HashMap<String, NodeList>();
-	static {
-		try {
-			FreeUtil.getXmlElement(mMission);
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (XmlParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 	
 	@RequestMapping(value = FreePathConfig.CONTEXT_ROOT, method = RequestMethod.GET)
 	public String get(Model result, HttpServletRequest request
@@ -69,7 +47,8 @@ public class FreeController {
 		NodeList missions, returnPages;
 		Node mission, returnPage;
 		Map<String, String> mReturnPages = new HashMap<String, String>();
-		missions = mMission.get(sMission);
+		
+		missions = FreeModuleConfig.getInstance().getMission(sMission);
 
 		Object instance = null, model = null, returnObject;
 		Class<?> klass = null, argType = null;
@@ -124,7 +103,7 @@ public class FreeController {
 						returnObject = method.invoke(instance);
 					}
 					
-					result.addAttribute(FreeReservedWordConfig.MISSION_RESULT_KEY, returnObject);
+					result.addAttribute(FreeReservedWordConfig.MISSION_RESULT, returnObject);
 				} else {
 					if( argType != null ){
 						method.invoke(instance, model);

@@ -1,4 +1,4 @@
-package com.free.module;
+package com.free.module.core.controller;
 
 import java.text.DateFormat;
 import java.util.Date;
