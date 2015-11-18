@@ -56,5 +56,5 @@
     <beans:bean id="fileDownloadView" class="com.free.module.core.view.FileDownloadView"/>
     <beans:bean id="ajaxResultView" class="com.free.module.core.view.AjaxResultView"/>
     
-	<context:component-scan base-package="com.free.module" />
+    <context:component-scan base-package="com.free.module" />
 </beans:beans>
