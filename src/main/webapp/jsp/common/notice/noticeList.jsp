@@ -2,23 +2,6 @@
 <%@ page import="com.free.module.core.config.FreeReservedWordConfig" %>
 <%@ page import="com.free.module.common.model.vo.NoticeVo" %>
 <%@ page import="java.util.*" %>
-<%
-/*
-List<NoticeVo> notices = (List<NoticeVo>)request.getAttribute(FreeReservedWordConfig.MISSION_RESULT);
-StringBuffer sbData = null;
-if( notices != null ){
-    System.out.println("notices : " + notices.size());
-    sbData = new StringBuffer();
-
-    for( NoticeVo notice : notices ){
-        sbData.append("{seq:"+notice.getSeq()+
-        		   ", title:'"+notice.getTitle()+
-                   "', writer:'"+notice.getWriter()+
-                   "', reg_date:'"+notice.getReg_date()+"'},");
-    }
-}
-*/
-%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -27,7 +10,6 @@ if( notices != null ){
 <link rel="stylesheet" type="text/css" href="/resources/axisj-1.0.19/ui/arongi/AXJ.min.css"/>
 <script type="text/javascript" src="/resources/axisj-1.0.19/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="/resources/axisj-1.0.19/dist/AXJ.min.js"></script>
-<script type="text/javascript" src="/resources/axisj-1.0.19/lib/AXGrid.js"></script>
 <script type="text/javascript" src="/resources/common/js/common.util.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -42,8 +24,19 @@ $(document).ready(function(){
     	event: function(){
     		document.mainForm.seq.value = this.item.seq;
             document.mainForm.submit();
-    	}
+    	},
+    	ajaxInfo: {
+                ajaxUrl : "/ajax",
+                dataType: "json",
+                ajaxPars: {
+                    "mission":"CM0000007"
+                },
+                onLoad  : function(){
+                    
+                }
+            }
     });
+    
 });
 </script>
 </head>

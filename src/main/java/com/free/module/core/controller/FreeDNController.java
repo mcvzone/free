@@ -22,6 +22,8 @@ public class FreeDNController{
     	if( fileName.indexOf("/") > -1 ){
     		fileName = fileName.replaceAll("/", "");
     	}
+    	
+    	//::TODO biz category define.
         String fullPath = FreePathConfig.ATTACH_FILE_PATH + "/notice/" + fileName;
         File file = new File(fullPath);
         result.addAttribute("file", file);

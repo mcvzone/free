@@ -5,7 +5,7 @@ import javax.servlet.ServletContextListener;
 
 import com.free.module.core.config.FreeModuleConfig;
 
-public class FreeModuleListener implements ServletContextListener{
+public class FreePrepareListener implements ServletContextListener{
 
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {

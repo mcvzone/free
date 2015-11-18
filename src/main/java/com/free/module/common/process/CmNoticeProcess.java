@@ -15,28 +15,23 @@ public class CmNoticeProcess {
 	private static final Logger logger = LoggerFactory.getLogger(CmNoticeProcess.class);
 	
 	public JSONObject selectNoticeList(){
-		logger.debug("list in.......");
 		JSONObject jsonResult = new JSONObject();
 		jsonResult.put("result", "ok");
 		jsonResult.put("list", this.getTestList());
 		return jsonResult;
 	}
 
-	public JSONObject selectNoticeDetail(Map<String, String> mParam){
-		JSONObject jsonResult = new JSONObject();
-		jsonResult.put("list", this.getTestList());
-		
+	public NoticeVo selectNoticeDetail(Map<String, String> mParam){
 		String sSeq = mParam.get("seq");
 		for( NoticeVo notice : this.getTestList() ){
 			logger.debug("seq : " + sSeq + ", notice seq : " + notice.getSeq());
 			
 			if( sSeq.equals(notice.getSeq()) ){
-				jsonResult.put("desc", notice);
-				break;
+				return notice;
 			}
 		}
 		
-		return jsonResult;
+		return null;
 	}
 	
 	private List<NoticeVo> getTestList(){
@@ -55,7 +50,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("홈페이지 오픈 했습니다.\n기념글 입니다.");
 		notice.setRed_count("11");
-		//notice.setAttachs(attachs);
+//		notice.setAttachs(attachs);
 		notices.add(notice);
 		
 		notice = new NoticeVo();
@@ -67,7 +62,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("냉모밀");
 		notice.setRed_count("22");
-		//notice.setAttachs(attachs);
+		notice.setAttachs(attachs);
 		notices.add(notice);
 
 		notice = new NoticeVo();
@@ -79,7 +74,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("정기 모임에 꼭 참여 하시기 바랍니다.\n\n\n안그러면 후회 하실꺼에요.");
 		notice.setRed_count("333");
-//		notice.setAttachs(attachs);
+		notice.setAttachs(attachs);
 		notices.add(notice);
 
 		notice = new NoticeVo();
@@ -91,7 +86,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("냉면");
 		notice.setRed_count("1234");
-//		notice.setAttachs(attachs);
+		notice.setAttachs(attachs);
 		notices.add(notice);
 
 		notice = new NoticeVo();
@@ -103,7 +98,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("냉무");
 		notice.setRed_count("5678");
-//		notice.setAttachs(attachs);
+		notice.setAttachs(attachs);
 		notices.add(notice);
 
 		notice = new NoticeVo();
@@ -115,7 +110,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("냉무");
 		notice.setRed_count("5678");
-//		notice.setAttachs(attachs);
+		notice.setAttachs(attachs);
 		notices.add(notice);
 
 
@@ -128,7 +123,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("냉무");
 		notice.setRed_count("5678");
-//		notice.setAttachs(attachs);
+		notice.setAttachs(attachs);
 		notices.add(notice);
 
 		notice = new NoticeVo();
@@ -140,7 +135,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("냉무");
 		notice.setRed_count("5678");
-//		notice.setAttachs(attachs);
+		notice.setAttachs(attachs);
 		notices.add(notice);
 
 		notice = new NoticeVo();
@@ -152,7 +147,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("냉무");
 		notice.setRed_count("5678");
-//		notice.setAttachs(attachs);
+		notice.setAttachs(attachs);
 		notices.add(notice);
 
 		notice = new NoticeVo();
@@ -164,7 +159,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("냉무");
 		notice.setRed_count("5678");
-//		notice.setAttachs(attachs);
+		notice.setAttachs(attachs);
 		notices.add(notice);
 
 		notice = new NoticeVo();
@@ -176,7 +171,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("냉무");
 		notice.setRed_count("5678");
-//		notice.setAttachs(attachs);
+		notice.setAttachs(attachs);
 		notices.add(notice);
 
 		notice = new NoticeVo();
@@ -188,7 +183,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("냉무");
 		notice.setRed_count("5678");
-//		notice.setAttachs(attachs);
+		notice.setAttachs(attachs);
 		notices.add(notice);
 
 		notice = new NoticeVo();
@@ -200,7 +195,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("냉무");
 		notice.setRed_count("5678");
-//		notice.setAttachs(attachs);
+		notice.setAttachs(attachs);
 		notices.add(notice);
 
 		notice = new NoticeVo();
@@ -212,7 +207,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("냉무");
 		notice.setRed_count("5678");
-//		notice.setAttachs(attachs);
+		notice.setAttachs(attachs);
 		notices.add(notice);
 
 		notice = new NoticeVo();
@@ -224,7 +219,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("냉무");
 		notice.setRed_count("5678");
-//		notice.setAttachs(attachs);
+		notice.setAttachs(attachs);
 		notices.add(notice);
 
 		notice = new NoticeVo();
@@ -236,7 +231,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("냉무");
 		notice.setRed_count("5678");
-//		notice.setAttachs(attachs);
+		notice.setAttachs(attachs);
 		notices.add(notice);
 
 		notice = new NoticeVo();
@@ -248,7 +243,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("냉무");
 		notice.setRed_count("5678");
-//		notice.setAttachs(attachs);
+		notice.setAttachs(attachs);
 		notices.add(notice);
 
 		notice = new NoticeVo();
@@ -260,7 +255,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("냉무");
 		notice.setRed_count("5678");
-//		notice.setAttachs(attachs);
+		notice.setAttachs(attachs);
 		notices.add(notice);
 
 		notice = new NoticeVo();
@@ -272,7 +267,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("냉무");
 		notice.setRed_count("5678");
-//		notice.setAttachs(attachs);
+		notice.setAttachs(attachs);
 		notices.add(notice);
 
 		notice = new NoticeVo();
@@ -284,7 +279,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("냉무");
 		notice.setRed_count("5678");
-//		notice.setAttachs(attachs);
+		notice.setAttachs(attachs);
 		notices.add(notice);
 
 		notice = new NoticeVo();
@@ -296,7 +291,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("냉무");
 		notice.setRed_count("5678");
-//		notice.setAttachs(attachs);
+		notice.setAttachs(attachs);
 		notices.add(notice);
 
 		notice = new NoticeVo();
@@ -308,7 +303,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("냉무");
 		notice.setRed_count("5678");
-//		notice.setAttachs(attachs);
+		notice.setAttachs(attachs);
 		notices.add(notice);
 
 		notice = new NoticeVo();
@@ -320,7 +315,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("냉무");
 		notice.setRed_count("5678");
-//		notice.setAttachs(attachs);
+		notice.setAttachs(attachs);
 		notices.add(notice);
 
 		notice = new NoticeVo();
@@ -332,7 +327,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("냉무");
 		notice.setRed_count("5678");
-//		notice.setAttachs(attachs);
+		notice.setAttachs(attachs);
 		notices.add(notice);
 
 		notice = new NoticeVo();
@@ -344,7 +339,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("냉무");
 		notice.setRed_count("5678");
-//		notice.setAttachs(attachs);
+		notice.setAttachs(attachs);
 		notices.add(notice);
 
 		notice = new NoticeVo();
@@ -356,7 +351,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("냉무");
 		notice.setRed_count("5678");
-//		notice.setAttachs(attachs);
+		notice.setAttachs(attachs);
 		notices.add(notice);
 
 		notice = new NoticeVo();
@@ -368,7 +363,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("냉무");
 		notice.setRed_count("5678");
-//		notice.setAttachs(attachs);
+		notice.setAttachs(attachs);
 		notices.add(notice);
 
 		notice = new NoticeVo();
@@ -380,7 +375,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("냉무");
 		notice.setRed_count("5678");
-//		notice.setAttachs(attachs);
+		notice.setAttachs(attachs);
 		notices.add(notice);
 
 		notice = new NoticeVo();
@@ -392,7 +387,7 @@ public class CmNoticeProcess {
 		notice.setEnd_date("20150920");
 		notice.setDescription("냉무");
 		notice.setRed_count("5678");
-//		notice.setAttachs(attachs);
+		notice.setAttachs(attachs);
 		notices.add(notice);
 		return notices;
 	}

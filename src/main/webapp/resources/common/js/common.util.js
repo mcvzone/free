@@ -57,32 +57,23 @@ function gridAjax(config){
 	var myGrid = new AXGrid();
     myGrid.setConfig({
         targetID : config.target===undefined?"id-grid":config.target,
-        theme : "AXGrid",
-        height: "auto",
+        theme  : "AXGrid",
+        height : "auto",
         //viewMode: "grid", // ["grid","icon","mobile"]
         // 브라우저 사이즈에 따른 changeGridView 설정
-        mediaQuery: {
+        mediaQuery : {
             mx:{min:0, max:600}, dx:{min:600}
         },
         colGroup : config.cols,
 
         body : {
-            onclick: config.event
+            onclick : config.event
         },
-        page:{
-            paging:config.paging
+        page : {
+            paging : config.paging
         }
     });
 
-    myGrid.setList({
-	    	ajaxUrl : "/ajax",
-	    	dataType: "json",
-	        ajaxPars: {
-	            "mission":"CM0000007"
-	        },
-	        onLoad  : function(){
-	        	
-	        }
-	});
+    myGrid.setList(config.ajaxInfo);
 }
 

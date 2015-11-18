@@ -12,7 +12,7 @@ public class NoticeVo {
     private String description;
     private String red_count;
     private String use_yn;
-    //private List<String> attachs;
+    private List<String> attachs;
     
 	public String getSeq() {
 		return seq;
@@ -67,5 +67,11 @@ public class NoticeVo {
 	}
 	public void setUse_yn(String use_yn) {
 		this.use_yn = use_yn;
+	}
+	public List<String> getAttachs() {
+		return attachs;
+	}
+	public void setAttachs(List<String> attachs) {
+		this.attachs = attachs;
 	}
 }

@@ -61,4 +61,10 @@
         <class>com.free.module.common.process.CmNoticeProcess</class>
         <method-name>selectNoticeList</method-name>
     </mission>
+    
+    <mission id="CM0000008">
+        <descript>공지사항 수정</descript>
+        <class>com.free.module.common.process.CmNoticeProcess</class>
+        <method-name>selectNoticeList</method-name>
+    </mission>
 </missions>
