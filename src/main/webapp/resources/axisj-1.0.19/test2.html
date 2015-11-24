@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript">
+    var idRow = 0, displayRow = 1;
+    var statStart0 = 0, statStart1 = 0, statLine0 = 0, statLine1 = 0, statResult0 = 0, statResult1 = 0;
+    function fStart(){
+    	
+    	if( idRow >= 50 ){
+    		fInit();
+    	}
+    	
+        var isp = document.getElementById("id-start-position");
+    	var il = document.getElementById("id-line");
+    	var ir = document.getElementById("id-result");
+    	
+    	var start = Math.floor(Math.random()*2);
+        var line = Math.floor(Math.random()*2);
+        
+        isp.innerText = start==0?"좌출":"우출";
+        il.innerText = line==0?"4줄":"3줄"; 
+        ir.innerText = start == line?"홀":"짝";
+        
+        var ih = document.getElementById("id-history");
+        ih.innerHTML = "<p>"+
+                           "<span id='id-rownum"+idRow+"'></span>"+
+                           "<span>출발 : </span><span><font id='id-start-position-history"+idRow+"'></font></span>"+
+                           "<span>줄수 : </span><span><font id='id-line-history"+idRow+"'></font></span>"+
+                           "<span>결과 : </span><span><font id='id-result-history"+idRow+"'></font></span>"+
+                       "</p>"+ih.innerHTML;
+
+        var irn = document.getElementById("id-rownum"+idRow);
+        var isph = document.getElementById("id-start-position-history"+idRow);
+        var ilh = document.getElementById("id-line-history"+idRow);
+        var irh = document.getElementById("id-result-history"+idRow);
+        
+        irn.innerText = ""+displayRow++;
+        isph.innerText = start==0?"좌출":"우출";
+        ilh.innerText = line==0?"4줄":"3줄"; 
+        irh.innerText = start == line?"홀":"짝";
+        idRow++;
+        
+        var istat = document.getElementById("id-statistics");
+        
+        start==0?statStart0++:statStart1++;
+        line==0?statLine0++:statLine1++; 
+        start==line?statResult0++:statResult1++;
+        
+        istat.innerHTML = "[ 좌출("+(Math.floor(statStart0/displayRow*100))+"%) : " + statStart0 + " / 우출("+(Math.floor(statStart1/displayRow*100))+"%) : " + statStart1 + "]<br/>" +
+                          "[ 네줄("+(Math.floor(statLine0/displayRow*100))+"%) : " + statLine0  + " / 세줄("+(Math.floor(statLine1/displayRow*100))+"%) : " + statLine1  + "]<br/>" +
+                          "[ 홀수("+(Math.floor(statResult0/displayRow*100))+"%) : " + statResult0+ " / 짝수("+(Math.floor(statResult1/displayRow*100))+"%) : " + statResult1+ "]";
+    }
+    
+    function fInit(){
+    	var ih = document.getElementById("id-history");
+    	ih.innerHTML = "";
+    	
+    	idRow = 0;
+    	//displayRow = 1;
+    	
+    	var isp = document.getElementById("id-start-position");
+        var il = document.getElementById("id-line");
+        var ir = document.getElementById("id-result");
+        
+        isp.innerText = ".";
+        il.innerText = "."; 
+        ir.innerText = ".";
+    }
+    </script>
+    
+    <style type="text/css">
+        span{
+            display:inline-block;
+            width: 80px;
+            height: 30px;
+            line-height: 30px;
+            background-color: #efefef;
+            text-align: right;
+            font-weight:bold;
+        }
+        
+        font{
+            background-color: yellow;
+            width: 30px;
+        }
+        
+        button{
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+    </head>
+<body>
+<button onclick="javascript:fStart();">시작</button>
+<button onclick="javascript:fInit();">초기화</button>
+<button onclick="javascript:alert('모든 사진이 전송 되었습니다.')">노클릭</button>
+<p><span>출발 : </span><span id="id-start-position">.</span></p>
+<p><span>줄수 : </span><span id="id-line">.</span></p>
+<p><span>결과 : </span><span id="id-result">.</span></p>
+
+<h3>통계</h3>
+<div id="id-statistics">
+
+</div>
+<h3>결과 리스트(최근 50개만 통계는 클릭 횟수 만큼 표시)</h3>
+<div id="id-history">
+    
+</div>
+</body>
+</html>

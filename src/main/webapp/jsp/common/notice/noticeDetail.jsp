@@ -30,14 +30,24 @@ if( noticeVo != null ){
 }
 
 %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd" -->
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>공지사항-상세</title>
 <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 <script type="text/javascript" src="/resources/common/js/common.util.js"></script>
+<script type="text/javascript" src="/resources/axisj-1.0.19/lib/AXCore.js"></script>
+<script type="text/javascript" src="/resources/axisj-1.0.19/lib/AXUpload5.js"></script>
 <script type="text/javascript">
+/**
+ * Require Files for AXISJ UI Component...
+ * Based        : jQuery
+ * Javascript   : AXJ.js, AXUpload5.js
+ * CSS          : AXJ.css, AXButton.css, AXUpload5.css
+ */ 
+var pageID = "AXUpload5_option";
 var myUpload = new AXUpload5();
 
 var fnObj = {
@@ -154,63 +164,9 @@ var fnObj = {
         }
     }       
 };
+jQuery(document.body).ready(function(){fnObj.pageStart()});
 
 
-$(document).ready(function(){
-	
-	var form = document.mainForm;
-	
-	var columns = [{key:"seq", label:"번호", width:"100", align:"center", formatter:"money"},
-                   {key:"title", label:"제목", width:"500"},
-                   {key:"writer", label:"작성자", width:"100", align:"center"},
-                   {key:"reg_date", label:"작성일", width:"*", align:"center", formatter:"date"}];
-   
-   gridAjax({
-       cols: columns,
-       paging: true,
-       event: function(){
-    	   form.action = "/free?mission=CM0000006";
-           form.seq.value = this.item.seq;
-           form.submit();
-       },
-       ajaxInfo: {
-               ajaxUrl : "/ajax",
-               dataType: "json",
-               ajaxPars: {
-                   "mission":"CM0000007"
-               },
-               onLoad  : function(){
-                   
-               }
-           }
-   });
-   
-   $("#AXInputDateED").bindTwinDate({
-       startTargetID: "AXInputDateST",
-       handleLeft: 25,
-       align: "right",
-       valign: "bottom",
-       separator: "/",
-       buttonText: "선택",
-       onChange: function () {
-           //toast.push(Object.toJSON(this));
-       },
-       onBeforeShowDay: function (date) {
-           if (date.getDay() == 3) {
-               return { isEnable: false, title: "수요일 선택불가", className: "", style: "" };
-           }
-       }
-   });
-   
-   $("button").click(function(){
-	   if( "List" == this.innerText ){
-		   form.action = "/free?mission=CM0000005";
-	   } else if("Update"){
-		   form.action = "/free?mission=CM0000005";
-	   }
-       form.submit();
-   });
-});
 </script>
 <style type="text/css">
 .cls-read-table {

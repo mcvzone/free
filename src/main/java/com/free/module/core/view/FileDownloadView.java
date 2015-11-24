@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.servlet.view.AbstractView;
+
+import com.free.module.core.config.FreeReservedWordConfig;
  
 @Component(value="fileDownloadView")
 public class FileDownloadView extends AbstractView {
@@ -25,9 +27,9 @@ public class FileDownloadView extends AbstractView {
 		
 		String sUserAgent, sFileName;
 		
-		File file = (File)model.get("file");
+		File file = (File)model.get(FreeReservedWordConfig.FILE);
 		sFileName = URLEncoder.encode(file.getName(), "utf-8");
-		sFileName = sFileName.replace("+", " ");
+		sFileName = sFileName.replaceAll("+", " ");
 		
 		sUserAgent = request.getHeader("User-Agent");
 		response.setContentType("application/download; utf-8");
