@@ -6,5 +6,6 @@ public class FreePathConfig {
 	public static final String ATTACH_FILE_PATH = "D:/dev/fileserver";
 	public static final String CONTEXT_ROOT = "/free";
 	public static final String CONTEXT_DOWNLOAD = "/download";
+	public static final String CONTEXT_UPLOAD = "/upload";
 	public static final String CONTEXT_AJAX = "/ajax";
 }
