@@ -48,7 +48,6 @@
     
     <beans:bean id="fileDownloadView" class="com.free.module.core.view.FileDownloadView"/>
     <beans:bean id="fileUploadView" class="com.free.module.core.view.FileUploadView"/>
-    <beans:bean id="ajaxResultView" class="com.free.module.core.view.AjaxResultView"/>
     
     <context:component-scan base-package="com.free.module" />
 </beans:beans>

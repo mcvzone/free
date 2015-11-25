@@ -14,11 +14,8 @@ import net.sf.json.JSONObject;
 public class CmNoticeProcess {
 	private static final Logger logger = LoggerFactory.getLogger(CmNoticeProcess.class);
 	
-	public JSONObject selectNoticeList(){
-		JSONObject jsonResult = new JSONObject();
-		jsonResult.put("result", "ok");
-		jsonResult.put("list", this.getTestList());
-		return jsonResult;
+	public List<NoticeVo> selectNoticeList(){
+		return this.getTestList();
 	}
 
 	public NoticeVo selectNoticeDetail(Map<String, String> mParam){

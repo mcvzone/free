@@ -1,11 +1,15 @@
 package com.free.module.core.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +27,8 @@ import com.free.module.core.config.WordConfig;
 import com.free.module.core.exception.ReturnToVoidException;
 import com.free.module.core.util.XmlUtil;
 
+import net.sf.json.JSONObject;
+
 @Controller
 public class AjaxController{
 	
@@ -30,10 +36,11 @@ public class AjaxController{
     
 	@SuppressWarnings("unchecked")
     @RequestMapping(value=PathConfig.CONTEXT_AJAX, method = RequestMethod.POST)
-	public String post(Model result, HttpServletRequest request
+	public void post(Model result, HttpServletRequest request, HttpServletResponse response
 			, @RequestParam(value=WordConfig.REQUIRED_SYSTEM_PARAM1) String sMission
 			, @RequestParam Map<String, String> map) throws ClassNotFoundException, InstantiationException, IllegalAccessException,
-															NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException, ReturnToVoidException {
+															NoSuchMethodException, SecurityException, IllegalArgumentException,
+															InvocationTargetException, ReturnToVoidException, IOException {
 		String sNodeName, sValue;
 		NodeList missions, returnPages;
 		Node mission, returnPage;
@@ -41,7 +48,7 @@ public class AjaxController{
 		
 		missions = ModuleConfig.getInstance().getMission(sMission);
 
-		Object instance = null, model = null, returnObject;
+		Object instance = null, model = null, returnObject = null;
 		Class<?> klass = null, argType = null;
 		Method method = null;
 
@@ -93,13 +100,24 @@ public class AjaxController{
 					} else {
 						returnObject = method.invoke(instance);
 					}
-					
-					result.addAttribute(WordConfig.MISSION_RESULT, returnObject);
 				} else {
 					throw new ReturnToVoidException("can't void return.");
 				}
 			}
 		}
-		return "ajaxResultView";
+		
+		JSONObject jsonResult = new JSONObject();
+		jsonResult.put(WordConfig.MISSION_RESULT, "ok");
+
+		if( ArrayList.class.equals(returnObject.getClass()) ){
+			jsonResult.put(WordConfig.MISSION_LIST, returnObject);
+		} else {
+			jsonResult.put(WordConfig.MISSION_DATA, returnObject);
+		}
+		
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		out.print(jsonResult);
+		out.flush();
 	}
 }

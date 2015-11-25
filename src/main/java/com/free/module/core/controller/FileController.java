@@ -2,7 +2,6 @@ package com.free.module.core.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -20,7 +19,6 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.free.module.core.config.PathConfig;
 import com.free.module.core.config.WordConfig;
 import com.free.module.core.util.FileUtil;
+import com.free.module.core.util.StringUtil;
 
 import net.sf.json.JSONObject;
 
@@ -47,7 +46,7 @@ public class FileController{
 	 * @return
 	 * @throws IOException 
 	 */
-    @RequestMapping(value = PathConfig.CONTEXT_DOWNLOAD, method = RequestMethod.POST)
+    @RequestMapping(value = PathConfig.CONTEXT_DOWNLOAD)
     public void download(Model result, HttpServletRequest request, HttpServletResponse response,
     						@RequestParam(WordConfig.REQUIRED_SYSTEM_PARAM2)String fileName) throws IOException{
     	if( fileName.indexOf("/") > -1 ){
@@ -61,7 +60,7 @@ public class FileController{
         
         String sUserAgent, sFileName;
 		sFileName = URLEncoder.encode(file.getName(), "utf-8");
-		sFileName = sFileName.replaceAll("+", " ");
+		sFileName = sFileName.replace("+", " ");
 		
 		sUserAgent = request.getHeader("User-Agent");
 		response.setContentType("application/download; utf-8");
@@ -81,21 +80,13 @@ public class FileController{
 		try {
 			fis = new FileInputStream(file);
 			FileCopyUtils.copy(fis, out);
-			
-			logger.debug(fis.toString());
-			
+			out.flush();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			if (fis != null) {
-				try {
-					fis.close();
-				} catch (Exception e) {
-				}
-			}
+			if( fis != null ){ try { fis.close(); } catch (Exception e) {} }
+			if( out != null ){ try { out.close(); } catch (Exception e) {} }
 		}
-		
-		out.flush();
     }
     
     
@@ -105,57 +96,58 @@ public class FileController{
      * @param result
      * @param request
      * @return
+     * @throws IOException 
      */
 	@RequestMapping(value = PathConfig.CONTEXT_UPLOAD, method = RequestMethod.POST)
-	public String upload(@ModelAttribute("file") MultipartFile file
-							, @ModelAttribute("action") String sAction
-							, Model result, HttpServletRequest request) {
+	public void upload(@RequestParam("file") MultipartFile file, HttpServletRequest request, HttpServletResponse response){
+		// 파일명
+		String fileName = StringUtil.convertKorToUTF(file.getOriginalFilename());
+		// 업로드 경로 설정
+		String sRootPath = uploadPathResource.getPath();
+		String sSvrFilePath = FileUtil.getFilePath(sRootPath);
+		String sSvrFileName = FileUtil.getFileName(fileName);
 
-		InputStream inputStream = null;
-		OutputStream outputStream = null;
-
-		JSONObject jSONObject = new JSONObject();
-		
-		if (file.getSize() == 0) {
-			jSONObject.put("result", "fail");
-			jSONObject.put("desc", "file size zero");
-			return "freeUploadView";
-		}
-
-		String fileName = file.getOriginalFilename();
-
+		// 파일 관련 변수 선언
+		InputStream inStream = null;    
+		OutputStream outStream = null;
+		// AJAX 관련 변수 선언
+		PrintWriter outWriter=null; 
 		try {
-			inputStream = file.getInputStream();
+			// 파일 업로드 변수 설정
+			inStream = file.getInputStream();  
+			logger.debug("path:"+sRootPath+sSvrFilePath);
+			File newFile = new File(sRootPath+sSvrFilePath, sSvrFileName);
+			// 파일 업로드 실행
+			boolean isUploaded = FileUtil.uploadFormFile(file, newFile);
+			JSONObject jSONObject = new JSONObject();
+			if(isUploaded){
+				// 업로드 파일 정보 셋팅
+				jSONObject.put(WordConfig.MISSION_RESULT, "ok");
+				jSONObject.put(WordConfig.Json.NAME, fileName);
+				jSONObject.put(WordConfig.Json.SAVE_NAME, sSvrFileName);
+				jSONObject.put(WordConfig.Json.UPLOADED_PATH , sSvrFilePath);
+				jSONObject.put(WordConfig.Json.FILE_SIZE, file.getSize());
+				jSONObject.put(WordConfig.Json.TYPE, file.getContentType());
+				
+				// 한글 처리를 위한 response 설정
+				response.setContentType("text/plain;charset=UTF-8");
+				response.setCharacterEncoding("UTF-8");
+				response.setHeader("Cache-Control", "no-chche");
 
-			//::TODO biz category define.
-			File newFile = new File(PathConfig.ATTACH_FILE_PATH + "/notice/" + fileName);
-			if (!newFile.exists()) {
-				newFile.createNewFile();
+			}else{
+				jSONObject.put(WordConfig.MISSION_RESULT, "fail");
 			}
-			outputStream = new FileOutputStream(newFile);
-			int read = 0;
-			byte[] bytes = new byte[1024];
-
-			while ((read = inputStream.read(bytes)) != -1) {
-				outputStream.write(bytes, 0, read);
-			}
-
-			jSONObject.put("result", "ok");
-			jSONObject.put("desc", "upload success");
-
-		} catch (IOException e) {
-			jSONObject.put("result", "fail");
-			jSONObject.put("desc", e.getCause());
-		} finally {
-			try {
-				outputStream.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			logger.debug("==============>jSONObject:"+jSONObject);
+			// 업로드 결과 전송
+			outWriter = response.getWriter();
+			outWriter.print(jSONObject);
+			outWriter.flush();
+		} catch (IOException ex) {  
+			logger.error(ex.getMessage(), ex);
+		}finally{
+			try{if(inStream!=null) inStream.close();}catch(Exception ex){}
+			try{if(outStream!=null) outStream.close();}catch(Exception ex){}
 		}
-
-		result.addAttribute(WordConfig.MISSION_RESULT, jSONObject);
-		return "fileUploadView";
 	}
 	
 	
@@ -165,40 +157,40 @@ public class FileController{
 	 * @param response
 	 */
 	@RequestMapping(value = PathConfig.CONTEXT_DELETE, method=RequestMethod.POST)
-	public void doDeleteFile(HttpSession session, HttpServletRequest request, HttpServletResponse response){
+	public void delete(HttpSession session, HttpServletResponse response,
+			@RequestParam(WordConfig.Json.TYPE) String sFileType,
+			@RequestParam(WordConfig.Json.UPLOADED_PATH) String sUploadedPath,
+			@RequestParam(WordConfig.Json.SAVE_NAME) String sSaveName){
 		
-		String sRootPath = null;
-		String sFileType = request.getParameter("file_type");
-		String sSvrFilePath = request.getParameter("file_path");
-		String sSvrFileName = request.getParameter("file_name");
+		logger.debug(sFileType + "_" + sUploadedPath + "_" + sSaveName);
 		
-		
-		// Root 파일 경로 지정
+		String sRootPath = uploadPathResource.getPath();
+		/*
 		if("FILE".equals(sFileType)){
-			sRootPath = uploadPathResource.getPath();
+			
 		}else if("IMAGE".equals(sFileType)){
 			sRootPath = session.getServletContext().getRealPath("/");
-		}
+		}*/
 		
 		JSONObject jSONObject = new JSONObject();
 		PrintWriter out=null;
 		try {
-			// 서버 파일 삭제
-			File file = new File(sRootPath+sSvrFilePath, sSvrFileName);
-			boolean isDeleted = FileUtil.deleteFile(file);
+			logger.debug("sRootPath+sUploadedPath [sSaveName] : " + sRootPath+sUploadedPath + "[ " + sSaveName + " ]");
 			
-			if(isDeleted){
-				jSONObject.put("result", "success");
-			}else{
-				jSONObject.put("result", "failure");
+			// 서버 파일 삭제
+			File file = new File(sRootPath+sUploadedPath, sSaveName);
+			if(FileUtil.deleteFile(file)) {
+				jSONObject.put(WordConfig.MISSION_RESULT, "ok");
+			} else {
+				jSONObject.put(WordConfig.MISSION_RESULT, "fail");
 			}
 
 			// 삭제 결과 전송
 			out = response.getWriter();
 			out.print(jSONObject);
 			out.flush();
-		} catch (Exception ex) {
-			logger.error(ex.getMessage(), ex);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
 		}finally{
 			try{
 				if(out!=null) out.close();
