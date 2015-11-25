@@ -54,7 +54,7 @@ public class FileController{
     	}
     	
     	//::TODO biz category define.
-        String fullPath = PathConfig.ATTACH_FILE_PATH + "/notice/" + fileName;
+        String fullPath = uploadPathResource.getPath() + fileName;
         File file = new File(fullPath);
         result.addAttribute(WordConfig.FILE, file);
         
