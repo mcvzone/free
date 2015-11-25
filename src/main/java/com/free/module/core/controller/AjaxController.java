@@ -17,21 +17,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.free.module.core.config.FreeModuleConfig;
-import com.free.module.core.config.FreePathConfig;
-import com.free.module.core.config.FreeReservedWordConfig;
+import com.free.module.core.config.ModuleConfig;
+import com.free.module.core.config.PathConfig;
+import com.free.module.core.config.WordConfig;
 import com.free.module.core.exception.ReturnToVoidException;
-import com.free.module.core.util.FreeUtil;
+import com.free.module.core.util.XmlUtil;
 
 @Controller
-public class FreeAjaxController{
+public class AjaxController{
 	
-	private static final Logger logger = LoggerFactory.getLogger(FreeAjaxController.class);
+	private static final Logger logger = LoggerFactory.getLogger(AjaxController.class);
     
 	@SuppressWarnings("unchecked")
-    @RequestMapping(value=FreePathConfig.CONTEXT_AJAX, method = RequestMethod.POST)
+    @RequestMapping(value=PathConfig.CONTEXT_AJAX, method = RequestMethod.POST)
 	public String post(Model result, HttpServletRequest request
-			, @RequestParam(value=FreeReservedWordConfig.REQUIRED_SYSTEM_PARAM1) String sMission
+			, @RequestParam(value=WordConfig.REQUIRED_SYSTEM_PARAM1) String sMission
 			, @RequestParam Map<String, String> map) throws ClassNotFoundException, InstantiationException, IllegalAccessException,
 															NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException, ReturnToVoidException {
 		String sNodeName, sValue;
@@ -39,7 +39,7 @@ public class FreeAjaxController{
 		Node mission, returnPage;
 		Map<String, String> mReturnPages = new HashMap<String, String>();
 		
-		missions = FreeModuleConfig.getInstance().getMission(sMission);
+		missions = ModuleConfig.getInstance().getMission(sMission);
 
 		Object instance = null, model = null, returnObject;
 		Class<?> klass = null, argType = null;
@@ -81,7 +81,7 @@ public class FreeAjaxController{
 				if( argType.equals(Map.class) ){
 					model = map;
 				} else {
-					model = FreeUtil.mappingParameterToModel(request.getParameterMap(), argType);
+					model = XmlUtil.mappingParameterToModel(request.getParameterMap(), argType);
 				}
 			}
 			
@@ -94,7 +94,7 @@ public class FreeAjaxController{
 						returnObject = method.invoke(instance);
 					}
 					
-					result.addAttribute(FreeReservedWordConfig.MISSION_RESULT, returnObject);
+					result.addAttribute(WordConfig.MISSION_RESULT, returnObject);
 				} else {
 					throw new ReturnToVoidException("can't void return.");
 				}

@@ -3,9 +3,9 @@ package com.free.module.core.config.listener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import com.free.module.core.config.FreeModuleConfig;
+import com.free.module.core.config.ModuleConfig;
 
-public class FreePrepareListener implements ServletContextListener{
+public class PrepareListener implements ServletContextListener{
 
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {
@@ -16,7 +16,7 @@ public class FreePrepareListener implements ServletContextListener{
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
 		// TODO Auto-generated method stub
-		FreeModuleConfig.getInstance();
+		ModuleConfig.getInstance();
 	}
 	
 }

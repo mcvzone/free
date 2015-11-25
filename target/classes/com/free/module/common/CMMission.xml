@@ -67,4 +67,15 @@
         <class>com.free.module.common.process.CmNoticeProcess</class>
         <method-name>selectNoticeList</method-name>
     </mission>
+    
+    
+    <mission id="CM0000009">
+        <return-page>
+            <success>/common/test.do</success>
+            <fail></fail>
+            <user-page1></user-page1>
+            <user-page2></user-page2>
+            <user-page3></user-page3>
+        </return-page>
+    </mission>
 </missions>

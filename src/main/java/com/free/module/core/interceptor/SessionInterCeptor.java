@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.free.module.common.model.vo.UserInfoVo;
-import com.free.module.core.config.FreeReservedWordConfig;
+import com.free.module.core.config.WordConfig;
 
 public class SessionInterCeptor extends HandlerInterceptorAdapter{
 private static final Logger logger = LoggerFactory.getLogger(SessionInterCeptor.class);
@@ -25,7 +25,7 @@ private static final Logger logger = LoggerFactory.getLogger(SessionInterCeptor.
 			return true;
 		}
 		
-		UserInfoVo userInfoVo = (UserInfoVo)request.getSession().getAttribute(FreeReservedWordConfig.USER_INFO);
+		UserInfoVo userInfoVo = (UserInfoVo)request.getSession().getAttribute(WordConfig.USER_INFO);
 		if( userInfoVo == null ){
 			response.sendRedirect("/free?mission=CM0000002");
 			return false;

@@ -18,11 +18,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.free.module.core.config.FreePathConfig;
+import com.free.module.core.config.PathConfig;
 import com.free.module.core.exception.XmlParseException;
 
-public class FreeUtil {
-	private static final Logger logger = LoggerFactory.getLogger(FreeUtil.class);
+public class XmlUtil {
+	private static final Logger logger = LoggerFactory.getLogger(XmlUtil.class);
 	
 	/**
 	 * parameter 정보를 Model에 매핑한다.
@@ -88,7 +88,7 @@ public class FreeUtil {
 		NodeList bizs, missions;
 		Node biz, mission;
 		
-		docBizConfig = builder.parse(new File(FreePathConfig.CONFIG_PATH + "freeModuleList.xml"));
+		docBizConfig = builder.parse(new File(PathConfig.CONFIG_PATH + "freeModuleList.xml"));
 		bizs = docBizConfig.getElementsByTagName("bizs");
 		String sId, sBizName, sBizMission;
 		
@@ -103,7 +103,7 @@ public class FreeUtil {
 			sBizName = bizs.item(0).getChildNodes().item(i).getNodeName();
 			sBizMission = bizs.item(0).getChildNodes().item(i).getTextContent();
 			
-			docBaMission = builder.parse(new File(FreePathConfig.BIZ_PATH + sBizName + "/" + sBizMission));
+			docBaMission = builder.parse(new File(PathConfig.BIZ_PATH + sBizName + "/" + sBizMission));
 			missions = docBaMission.getElementsByTagName("mission");
 			
 			for( int j=0; j<missions.getLength(); j++ ){

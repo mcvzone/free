@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<%@ page import="com.free.module.core.config.FreeReservedWordConfig" %>
+<%@ page import="com.free.module.core.config.WordConfig" %>
 <%@ page import="com.free.module.common.model.vo.UserInfoVo" %>
 <%
-UserInfoVo userInfoVo = (UserInfoVo)request.getSession().getAttribute(FreeReservedWordConfig.USER_INFO_KEY);
+UserInfoVo userInfoVo = (UserInfoVo)request.getSession().getAttribute(WordConfig.USER_INFO);
 %>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <html>

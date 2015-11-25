@@ -10,18 +10,18 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.free.module.core.exception.XmlParseException;
-import com.free.module.core.util.FreeUtil;
+import com.free.module.core.util.XmlUtil;
 
-public class FreeModuleConfig {
+public class ModuleConfig {
 
 	private static Map<String, NodeList> mMission = new HashMap<String, NodeList>();
 
 	private static final class SingletonHolder{
-		static final FreeModuleConfig freeModuleConfig = new FreeModuleConfig();
+		static final ModuleConfig moduleConfig = new ModuleConfig();
 		private SingletonHolder(){}
 	}
 	
-	private FreeModuleConfig(){
+	private ModuleConfig(){
 		try{
 			lodingModule();
 		}catch(Exception e){
@@ -29,12 +29,12 @@ public class FreeModuleConfig {
 		}
 	}
 	
-	public static FreeModuleConfig getInstance(){
-		return SingletonHolder.freeModuleConfig;
+	public static ModuleConfig getInstance(){
+		return SingletonHolder.moduleConfig;
 	}
 	
 	private void lodingModule() throws ParserConfigurationException, SAXException, IOException, XmlParseException{
-		mMission = FreeUtil.getMissionXmlElement();
+		mMission = XmlUtil.getMissionXmlElement();
 	}
 	
 	public NodeList getMission(String sMission){

@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.free.module.core.config.FreeModuleConfig;
-import com.free.module.core.config.FreePathConfig;
-import com.free.module.core.config.FreeReservedWordConfig;
-import com.free.module.core.util.FreeUtil;
+import com.free.module.core.config.ModuleConfig;
+import com.free.module.core.config.PathConfig;
+import com.free.module.core.config.WordConfig;
+import com.free.module.core.util.XmlUtil;
 
 /**
  * Handles requests for the application home page.
@@ -29,18 +29,18 @@ import com.free.module.core.util.FreeUtil;
 public class FreeController {
 	private static final Logger logger = LoggerFactory.getLogger(FreeController.class);
 	
-	@RequestMapping(value = FreePathConfig.CONTEXT_ROOT, method = RequestMethod.GET)
+	@RequestMapping(value = PathConfig.CONTEXT_ROOT, method = RequestMethod.GET)
 	public String get(Model result, HttpServletRequest request
-			, @RequestParam(value=FreeReservedWordConfig.REQUIRED_SYSTEM_PARAM1) String sMission
+			, @RequestParam(value=WordConfig.REQUIRED_SYSTEM_PARAM1) String sMission
 			, @RequestParam Map<String, String> map) throws ClassNotFoundException, InstantiationException, IllegalAccessException,
 															NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException {
 		return this.post(result, request, sMission, map);
 	}
 	
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value = FreePathConfig.CONTEXT_ROOT, method = RequestMethod.POST)
+	@RequestMapping(value = PathConfig.CONTEXT_ROOT, method = RequestMethod.POST)
 	public String post(Model result, HttpServletRequest request
-			, @RequestParam(value=FreeReservedWordConfig.REQUIRED_SYSTEM_PARAM1) String sMission
+			, @RequestParam(value=WordConfig.REQUIRED_SYSTEM_PARAM1) String sMission
 			, @RequestParam Map<String, String> map) throws ClassNotFoundException, InstantiationException, IllegalAccessException,
 															NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException {
 		String sNodeName, sValue, sReturnPage = "";
@@ -48,7 +48,7 @@ public class FreeController {
 		Node mission, returnPage;
 		Map<String, String> mReturnPages = new HashMap<String, String>();
 		
-		missions = FreeModuleConfig.getInstance().getMission(sMission);
+		missions = ModuleConfig.getInstance().getMission(sMission);
 
 		Object instance = null, model = null, returnObject;
 		Class<?> klass = null, argType = null;
@@ -90,7 +90,7 @@ public class FreeController {
 				if( argType.equals(Map.class) ){
 					model = map;
 				} else {
-					model = FreeUtil.mappingParameterToModel(request.getParameterMap(), argType);
+					model = XmlUtil.mappingParameterToModel(request.getParameterMap(), argType);
 				}
 			}
 			
@@ -103,7 +103,7 @@ public class FreeController {
 						returnObject = method.invoke(instance);
 					}
 					
-					result.addAttribute(FreeReservedWordConfig.MISSION_RESULT, returnObject);
+					result.addAttribute(WordConfig.MISSION_RESULT, returnObject);
 				} else {
 					if( argType != null ){
 						method.invoke(instance, model);
@@ -113,9 +113,9 @@ public class FreeController {
 				}
 			}
 			
-			sReturnPage = mReturnPages.get(FreeReservedWordConfig.SUCCESS_PAGE);
+			sReturnPage = mReturnPages.get(WordConfig.SUCCESS_PAGE);
 		} else {
-			sReturnPage = mReturnPages.get(FreeReservedWordConfig.SUCCESS_PAGE);
+			sReturnPage = mReturnPages.get(WordConfig.SUCCESS_PAGE);
 		}
 		
 		return sReturnPage;

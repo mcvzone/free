@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.AbstractView;
 
-import com.free.module.core.config.FreeReservedWordConfig;
+import com.free.module.core.config.WordConfig;
 
 import net.sf.json.JSONObject;
  
@@ -25,7 +25,7 @@ public class AjaxResultView extends AbstractView {
 		
 		response.setContentType("text/html; charset=UTF-8");
 		
-		JSONObject jsonResult = (JSONObject)model.get(FreeReservedWordConfig.MISSION_RESULT);
+		JSONObject jsonResult = (JSONObject)model.get(WordConfig.MISSION_RESULT);
 		
 		PrintWriter out = response.getWriter();
 		out.print(jsonResult);

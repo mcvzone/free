@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.servlet.view.AbstractView;
 
-import com.free.module.core.config.FreeReservedWordConfig;
+import com.free.module.core.config.WordConfig;
  
 @Component(value="fileDownloadView")
 public class FileDownloadView extends AbstractView {
@@ -27,7 +27,7 @@ public class FileDownloadView extends AbstractView {
 		
 		String sUserAgent, sFileName;
 		
-		File file = (File)model.get(FreeReservedWordConfig.FILE);
+		File file = (File)model.get(WordConfig.FILE);
 		sFileName = URLEncoder.encode(file.getName(), "utf-8");
 		sFileName = sFileName.replaceAll("+", " ");
 		

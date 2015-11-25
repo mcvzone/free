@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.free.module.core.config.FreeReservedWordConfig" %>
+<%@ page import="com.free.module.core.config.WordConfig" %>
 <%@ page import="com.free.module.common.model.vo.NoticeVo" %>
 <%@ page import="java.util.*"%>
 <%
 
-NoticeVo noticeVo = (NoticeVo)request.getAttribute(FreeReservedWordConfig.MISSION_RESULT);
+NoticeVo noticeVo = (NoticeVo)request.getAttribute(WordConfig.MISSION_RESULT);
 
 String sSeq = "";
 String sTitle = "";
