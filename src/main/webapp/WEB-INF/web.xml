@@ -12,8 +12,11 @@
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-        <listener-class>com.free.module.core.config.listener.PrepareListener</listener-class>
 	</listener>
+
+    <listener>
+        <listener-class>com.free.module.core.config.listener.PrepareListener</listener-class>
+    </listener>
 
 	<!-- Processes application requests -->
 	<servlet>
