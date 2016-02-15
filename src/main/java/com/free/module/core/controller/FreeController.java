@@ -27,97 +27,97 @@ import com.free.module.core.util.XmlUtil;
  */
 @Controller
 public class FreeController {
-	private static final Logger logger = LoggerFactory.getLogger(FreeController.class);
-	
-	@RequestMapping(value = PathConfig.CONTEXT_ROOT, method = RequestMethod.GET)
-	public String get(Model result, HttpServletRequest request
-			, @RequestParam(value=WordConfig.REQUIRED_SYSTEM_PARAM1) String sMission
-			, @RequestParam Map<String, String> map) throws ClassNotFoundException, InstantiationException, IllegalAccessException,
-															NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException {
-		return this.post(result, request, sMission, map);
-	}
-	
-	@SuppressWarnings("unchecked")
-	@RequestMapping(value = PathConfig.CONTEXT_ROOT, method = RequestMethod.POST)
-	public String post(Model result, HttpServletRequest request
-			, @RequestParam(value=WordConfig.REQUIRED_SYSTEM_PARAM1) String sMission
-			, @RequestParam Map<String, String> map) throws ClassNotFoundException, InstantiationException, IllegalAccessException,
-															NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException {
-		String sNodeName, sValue, sReturnPage = "";
-		NodeList missions, returnPages;
-		Node mission, returnPage;
-		Map<String, String> mReturnPages = new HashMap<String, String>();
-		
-		missions = ModuleConfig.getInstance().getMission(sMission);
+    private static final Logger logger = LoggerFactory.getLogger(FreeController.class);
+    
+    @RequestMapping(value = PathConfig.CONTEXT_ROOT, method = RequestMethod.GET)
+    public String get(Model result, HttpServletRequest request
+            , @RequestParam(value=WordConfig.REQUIRED_SYSTEM_PARAM1) String sMission
+            , @RequestParam Map<String, String> map) throws ClassNotFoundException, InstantiationException, IllegalAccessException,
+                                                            NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException {
+        return this.post(result, request, sMission, map);
+    }
+    
+    @SuppressWarnings("unchecked")
+    @RequestMapping(value = PathConfig.CONTEXT_ROOT, method = RequestMethod.POST)
+    public String post(Model result, HttpServletRequest request
+            , @RequestParam(value=WordConfig.REQUIRED_SYSTEM_PARAM1) String sMission
+            , @RequestParam Map<String, String> map) throws ClassNotFoundException, InstantiationException, IllegalAccessException,
+                                                            NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException {
+        String sNodeName, sValue, sReturnPage = "";
+        NodeList missions, returnPages;
+        Node mission, returnPage;
+        Map<String, String> mReturnPages = new HashMap<String, String>();
+        
+        missions = ModuleConfig.getInstance().getMission(sMission);
 
-		Object instance = null, model = null, returnObject;
-		Class<?> klass = null, argType = null;
-		Method method = null;
+        Object instance = null, model = null, returnObject;
+        Class<?> klass = null, argType = null;
+        Method method = null;
 
-		for(int i=0;i<missions.getLength();i++){
-			mission = missions.item(i);
-			sNodeName = mission.getNodeName();
-			sValue = mission.getTextContent();
-			
-			if( "class".equals(sNodeName) ){
-				klass = Class.forName(sValue);
-				instance = klass.newInstance();
-			} else if( "arg-type".equals(sNodeName)){
-				argType = Class.forName(sValue);
-			} else if( "method-name".equals(sNodeName)){
-				if( argType != null ){
-					method = klass.getDeclaredMethod(sValue, argType);
-				} else {
-					method = klass.getDeclaredMethod(sValue);
-				}
-			}/* else if( "return-type".equals(sNodeName)){
-				sResult = sValue;
-			} */else if( "return-page".equals(sNodeName)){
-				returnPages = mission.getChildNodes();
-				if( returnPages != null && returnPages.getLength() > 0){
-					for( int z=0; z<returnPages.getLength(); z++ ){
-						returnPage = returnPages.item(z);
-						mReturnPages.put(returnPage.getNodeName(), returnPage.getTextContent());
-					}
-				}
-			}
-		}
-		
-		if( klass != null ){
-			
-			//setting argument
-			if( argType != null ){
-				if( argType.equals(Map.class) ){
-					model = map;
-				} else {
-					model = XmlUtil.mappingParameterToModel(request.getParameterMap(), argType);
-				}
-			}
-			
-			//invoke mission
-			if( method != null ){
-				if( !void.class.equals(method.getReturnType())){
-					if( argType != null ){
-						returnObject = method.invoke(instance, model);
-					} else {
-						returnObject = method.invoke(instance);
-					}
-					
-					result.addAttribute(WordConfig.MISSION_RESULT, returnObject);
-				} else {
-					if( argType != null ){
-						method.invoke(instance, model);
-					} else {
-						method.invoke(instance);
-					}
-				}
-			}
-			
-			sReturnPage = mReturnPages.get(WordConfig.SUCCESS_PAGE);
-		} else {
-			sReturnPage = mReturnPages.get(WordConfig.SUCCESS_PAGE);
-		}
-		
-		return sReturnPage;
-	}
+        for(int i=0;i<missions.getLength();i++){
+            mission = missions.item(i);
+            sNodeName = mission.getNodeName();
+            sValue = mission.getTextContent();
+            
+            if( "class".equals(sNodeName) ){
+                klass = Class.forName(sValue);
+                instance = klass.newInstance();
+            } else if( "arg-type".equals(sNodeName)){
+                argType = Class.forName(sValue);
+            } else if( "method-name".equals(sNodeName)){
+                if( argType != null ){
+                    method = klass.getDeclaredMethod(sValue, argType);
+                } else {
+                    method = klass.getDeclaredMethod(sValue);
+                }
+            }/* else if( "return-type".equals(sNodeName)){
+                sResult = sValue;
+            } */else if( "return-page".equals(sNodeName)){
+                returnPages = mission.getChildNodes();
+                if( returnPages != null && returnPages.getLength() > 0){
+                    for( int z=0; z<returnPages.getLength(); z++ ){
+                        returnPage = returnPages.item(z);
+                        mReturnPages.put(returnPage.getNodeName(), returnPage.getTextContent());
+                    }
+                }
+            }
+        }
+        
+        if( klass != null ){
+            
+            //setting argument
+            if( argType != null ){
+                if( argType.equals(Map.class) ){
+                    model = map;
+                } else {
+                    model = XmlUtil.mappingParameterToModel(request.getParameterMap(), argType);
+                }
+            }
+            
+            //invoke mission
+            if( method != null ){
+                if( !void.class.equals(method.getReturnType())){
+                    if( argType != null ){
+                        returnObject = method.invoke(instance, model);
+                    } else {
+                        returnObject = method.invoke(instance);
+                    }
+                    
+                    result.addAttribute(WordConfig.MISSION_RESULT, returnObject);
+                } else {
+                    if( argType != null ){
+                        method.invoke(instance, model);
+                    } else {
+                        method.invoke(instance);
+                    }
+                }
+            }
+            
+            sReturnPage = mReturnPages.get(WordConfig.SUCCESS_PAGE);
+        } else {
+            sReturnPage = mReturnPages.get(WordConfig.SUCCESS_PAGE);
+        }
+        
+        return sReturnPage;
+    }
 }

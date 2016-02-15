@@ -2,7 +2,7 @@ package com.free.module.core.util;
 
 public class DateUtil {
 
-	private DateUtil() {}
+    private DateUtil() {}
     public static String getDateString() {
         java.text.SimpleDateFormat formatter =
             new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.KOREA);

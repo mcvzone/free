@@ -31,93 +31,93 @@ import net.sf.json.JSONObject;
 
 @Controller
 public class AjaxController{
-	
-	private static final Logger logger = LoggerFactory.getLogger(AjaxController.class);
     
-	@SuppressWarnings("unchecked")
+    private static final Logger logger = LoggerFactory.getLogger(AjaxController.class);
+    
+    @SuppressWarnings("unchecked")
     @RequestMapping(value=PathConfig.CONTEXT_AJAX, method = RequestMethod.POST)
-	public void post(Model result, HttpServletRequest request, HttpServletResponse response
-			, @RequestParam(value=WordConfig.REQUIRED_SYSTEM_PARAM1) String sMission
-			, @RequestParam Map<String, String> map) throws ClassNotFoundException, InstantiationException, IllegalAccessException,
-															NoSuchMethodException, SecurityException, IllegalArgumentException,
-															InvocationTargetException, ReturnToVoidException, IOException {
-		String sNodeName, sValue;
-		NodeList missions, returnPages;
-		Node mission, returnPage;
-		Map<String, String> mReturnPages = new HashMap<String, String>();
-		
-		missions = ModuleConfig.getInstance().getMission(sMission);
+    public void post(Model result, HttpServletRequest request, HttpServletResponse response
+            , @RequestParam(value=WordConfig.REQUIRED_SYSTEM_PARAM1) String sMission
+            , @RequestParam Map<String, String> map) throws ClassNotFoundException, InstantiationException, IllegalAccessException,
+                                                            NoSuchMethodException, SecurityException, IllegalArgumentException,
+                                                            InvocationTargetException, ReturnToVoidException, IOException {
+        String sNodeName, sValue;
+        NodeList missions, returnPages;
+        Node mission, returnPage;
+        Map<String, String> mReturnPages = new HashMap<String, String>();
+        
+        missions = ModuleConfig.getInstance().getMission(sMission);
 
-		Object instance = null, model = null, returnObject = null;
-		Class<?> klass = null, argType = null;
-		Method method = null;
+        Object instance = null, model = null, returnObject = null;
+        Class<?> klass = null, argType = null;
+        Method method = null;
 
-		for(int i=0;i<missions.getLength();i++){
-			mission = missions.item(i);
-			sNodeName = mission.getNodeName();
-			sValue = mission.getTextContent();
-			
-			if( "class".equals(sNodeName) ){
-				klass = Class.forName(sValue);
-				instance = klass.newInstance();
-			} else if( "arg-type".equals(sNodeName)){
-				argType = Class.forName(sValue);
-			} else if( "method-name".equals(sNodeName)){
-				if( argType != null ){
-					method = klass.getDeclaredMethod(sValue, argType);
-				} else {
-					method = klass.getDeclaredMethod(sValue);
-				}
-			}/* else if( "return-type".equals(sNodeName)){
-				sResult = sValue;
-			} */else if( "return-page".equals(sNodeName)){
-				returnPages = mission.getChildNodes();
-				if( returnPages != null && returnPages.getLength() > 0){
-					for( int z=0; z<returnPages.getLength(); z++ ){
-						returnPage = returnPages.item(z);
-						mReturnPages.put(returnPage.getNodeName(), returnPage.getTextContent());
-					}
-				}
-			}
-		}
-		
-		if( klass != null ){
-			
-			//setting argument
-			if( argType != null ){
-				if( argType.equals(Map.class) ){
-					model = map;
-				} else {
-					model = XmlUtil.mappingParameterToModel(request.getParameterMap(), argType);
-				}
-			}
-			
-			//invoke mission
-			if( method != null ){
-				if( !void.class.equals(method.getReturnType())){
-					if( argType != null ){
-						returnObject = method.invoke(instance, model);
-					} else {
-						returnObject = method.invoke(instance);
-					}
-				} else {
-					throw new ReturnToVoidException("can't void return.");
-				}
-			}
-		}
-		
-		JSONObject jsonResult = new JSONObject();
-		jsonResult.put(WordConfig.MISSION_RESULT, "ok");
+        for(int i=0;i<missions.getLength();i++){
+            mission = missions.item(i);
+            sNodeName = mission.getNodeName();
+            sValue = mission.getTextContent();
+            
+            if( "class".equals(sNodeName) ){
+                klass = Class.forName(sValue);
+                instance = klass.newInstance();
+            } else if( "arg-type".equals(sNodeName)){
+                argType = Class.forName(sValue);
+            } else if( "method-name".equals(sNodeName)){
+                if( argType != null ){
+                    method = klass.getDeclaredMethod(sValue, argType);
+                } else {
+                    method = klass.getDeclaredMethod(sValue);
+                }
+            }/* else if( "return-type".equals(sNodeName)){
+                sResult = sValue;
+            } */else if( "return-page".equals(sNodeName)){
+                returnPages = mission.getChildNodes();
+                if( returnPages != null && returnPages.getLength() > 0){
+                    for( int z=0; z<returnPages.getLength(); z++ ){
+                        returnPage = returnPages.item(z);
+                        mReturnPages.put(returnPage.getNodeName(), returnPage.getTextContent());
+                    }
+                }
+            }
+        }
+        
+        if( klass != null ){
+            
+            //setting argument
+            if( argType != null ){
+                if( argType.equals(Map.class) ){
+                    model = map;
+                } else {
+                    model = XmlUtil.mappingParameterToModel(request.getParameterMap(), argType);
+                }
+            }
+            
+            //invoke mission
+            if( method != null ){
+                if( !void.class.equals(method.getReturnType())){
+                    if( argType != null ){
+                        returnObject = method.invoke(instance, model);
+                    } else {
+                        returnObject = method.invoke(instance);
+                    }
+                } else {
+                    throw new ReturnToVoidException("can't void return.");
+                }
+            }
+        }
+        
+        JSONObject jsonResult = new JSONObject();
+        jsonResult.put(WordConfig.MISSION_RESULT, "ok");
 
-		if( ArrayList.class.equals(returnObject.getClass()) ){
-			jsonResult.put(WordConfig.MISSION_LIST, returnObject);
-		} else {
-			jsonResult.put(WordConfig.MISSION_DATA, returnObject);
-		}
-		
-		response.setContentType("text/html; charset=UTF-8");
-		PrintWriter out = response.getWriter();
-		out.print(jsonResult);
-		out.flush();
-	}
+        if( ArrayList.class.equals(returnObject.getClass()) ){
+            jsonResult.put(WordConfig.MISSION_LIST, returnObject);
+        } else {
+            jsonResult.put(WordConfig.MISSION_DATA, returnObject);
+        }
+        
+        response.setContentType("text/html; charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        out.print(jsonResult);
+        out.flush();
+    }
 }

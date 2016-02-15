@@ -17,25 +17,25 @@ import com.free.module.core.config.WordConfig;
 
 public class SessionInterCeptor extends HandlerInterceptorAdapter{
 private static final Logger logger = LoggerFactory.getLogger(SessionInterCeptor.class);
-	
-	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		String sMission = (String)request.getParameter("mission");
-		if( "CM0000001".equals(sMission) || "CM0000002".equals(sMission) || "CM0000003".equals(sMission) || "CM0000004".equals(sMission) ){
-			return true;
-		}
-		
-		UserInfoVo userInfoVo = (UserInfoVo)request.getSession().getAttribute(WordConfig.USER_INFO);
-		if( userInfoVo == null ){
-			response.sendRedirect("/free?mission=CM0000002");
-			return false;
-		}
-		return true;
-	}
-	
-	/*
-	@Override
-	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-		super.postHandle(request, response, handler, modelAndView);
-	}*/
+    
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        String sMission = (String)request.getParameter("mission");
+        if( "CM0000001".equals(sMission) || "CM0000002".equals(sMission) || "CM0000003".equals(sMission) || "CM0000004".equals(sMission) ){
+            return true;
+        }
+        
+        UserInfoVo userInfoVo = (UserInfoVo)request.getSession().getAttribute(WordConfig.USER_INFO);
+        if( userInfoVo == null ){
+            response.sendRedirect("/free?mission=CM0000002");
+            return false;
+        }
+        return true;
+    }
+    
+    /*
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        super.postHandle(request, response, handler, modelAndView);
+    }*/
 }

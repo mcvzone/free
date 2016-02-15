@@ -17,16 +17,16 @@ import net.sf.json.JSONObject;
  
 @Component(value="fileUploadView")
 public class FileUploadView extends AbstractView {
-	
-	private static final Logger logger = LoggerFactory.getLogger(FileUploadView.class);
-	
-	@Override
-	protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
-		response.setContentType("text/html; charset=UTF-8");
-		
-		JSONObject jsonResult = (JSONObject)model.get(WordConfig.MISSION_RESULT);
-		PrintWriter out = response.getWriter();
-		out.print(jsonResult);
-	}
+    
+    private static final Logger logger = LoggerFactory.getLogger(FileUploadView.class);
+    
+    @Override
+    protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        
+        response.setContentType("text/html; charset=UTF-8");
+        
+        JSONObject jsonResult = (JSONObject)model.get(WordConfig.MISSION_RESULT);
+        PrintWriter out = response.getWriter();
+        out.print(jsonResult);
+    }
 }
