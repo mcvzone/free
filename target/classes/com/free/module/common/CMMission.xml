@@ -78,4 +78,14 @@
             <user-page3></user-page3>
         </return-page>
     </mission>
+    
+    <mission id="CM0000010">
+        <return-page>
+            <success>/bbs/attach/attach.do</success>
+            <fail></fail>
+            <user-page1></user-page1>
+            <user-page2></user-page2>
+            <user-page3></user-page3>
+        </return-page>
+    </mission>
 </missions>
