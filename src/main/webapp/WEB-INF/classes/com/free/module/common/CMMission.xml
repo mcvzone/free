@@ -88,4 +88,17 @@
             <user-page3></user-page3>
         </return-page>
     </mission>
+    
+    
+    <mission id="CM0000011">
+        <class>com.free.module.common.process.CmTestProcess</class>
+        <method-name>test2</method-name>
+        <return-page>
+            <success>/bbs/attach/attach.do</success>
+            <fail></fail>
+            <user-page1></user-page1>
+            <user-page2></user-page2>
+            <user-page3></user-page3>
+        </return-page>
+    </mission>
 </missions>

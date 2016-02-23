@@ -15,6 +15,8 @@
 <title>회원 목록</title>
 </head>
 <body>
+
+
     MEMBER 테이블의 내용
     <table width="100%" border="1">
         <tr>
@@ -24,6 +26,7 @@
         </tr>
         <%
         InitialContext ic = null;
+        Context c = null;
         Context ec  =  null;
         DataSource ds = null;
         ResultSet rs = null;
@@ -33,7 +36,7 @@
              ic = new InitialContext();
              ec  = (Context)ic.lookup("java:/comp/env");
              ds = (DataSource) ec.lookup("jdbc/CUBRIDDS");
-
+             
              conn = ds.getConnection();
              stmt = conn.createStatement();
              String sql = "SELECT 1 name, 2 age, 3 old";
